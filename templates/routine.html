@@ -16,6 +16,7 @@
         
         <h1>Routine du matin</h1>
         
+        <!-- Routine du jour (checkable) -->
         <div class="routine-list">
             {% for item in routine %}
             <form method="POST" action="/routine/toggle/{{ item.id }}" class="routine-item-form">
@@ -25,6 +26,30 @@
                 </div>
             </form>
             {% endfor %}
+        </div>
+        
+        <!-- Ajouter un nouvel item -->
+        <div class="add-routine-section">
+            <h2>Gérer la routine</h2>
+            
+            <!-- Formulaire ajout -->
+            <form method="POST" action="/routine/add_item" class="add-routine-form">
+                <input type="text" name="item_name" placeholder="Nouvel item (ex: Faire mon lit)" required>
+                <button type="submit">+ Ajouter</button>
+            </form>
+            
+            <!-- Liste pour supprimer -->
+            <div class="manage-routine-list">
+                <p class="manage-hint">Clique sur × pour supprimer un item</p>
+                {% for item in routine_template %}
+                <div class="manage-routine-item">
+                    <span>{{ item.item_name }}</span>
+                    <form method="POST" action="/routine/delete_item/{{ item.id }}" style="display: inline;">
+                        <button type="submit" class="delete-btn-small">×</button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </body>

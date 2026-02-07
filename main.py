@@ -44,19 +44,30 @@ async def home(request: Request, db: Session = Depends(get_db)):
 async def routine_page(request: Request, db: Session = Depends(get_db)):
     today = date.today()
     
-    # Créer routine du jour si elle n'existe pas
-    existing = db.query(RoutineDaily).filter(RoutineDaily.date == today).first()
-    if not existing:
-        template_items = db.query(RoutineTemplate).order_by(RoutineTemplate.order).all()
-        for item in template_items:
-            db.add(RoutineDaily(date=today, item_name=item.item_name))
-        db.commit()
+    # Récupérer le template (items configurés)
+    routine_template = db.query(RoutineTemplate).order_by(RoutineTemplate.order).all()
     
-    routine = db.query(RoutineDaily).filter(RoutineDaily.date == today).all()
+    # Vérifier si routine du jour existe déjà
+    existing_routine = db.query(RoutineDaily).filter(RoutineDaily.date == today).all()
+    
+    # Si la routine du jour n'existe pas OU ne correspond pas au template, la recréer
+    if not existing_routine or len(existing_routine) != len(routine_template):
+        # Supprimer l'ancienne routine du jour
+        db.query(RoutineDaily).filter(RoutineDaily.date == today).delete()
+        
+        # Créer la nouvelle routine basée sur le template
+        for template_item in routine_template:
+            db.add(RoutineDaily(date=today, item_name=template_item.item_name, done=False))
+        
+        db.commit()
+        
+        # Recharger la routine
+        existing_routine = db.query(RoutineDaily).filter(RoutineDaily.date == today).all()
     
     return templates.TemplateResponse("routine.html", {
         "request": request,
-        "routine": routine
+        "routine": existing_routine,
+        "routine_template": routine_template
     })
 
 @app.post("/routine/toggle/{item_id}")
@@ -64,6 +75,23 @@ async def toggle_routine(item_id: int, db: Session = Depends(get_db)):
     item = db.query(RoutineDaily).filter(RoutineDaily.id == item_id).first()
     if item:
         item.done = not item.done
+        db.commit()
+    return RedirectResponse(url="/routine", status_code=303)
+
+# Ajouter item à la routine template
+@app.post("/routine/add_item")
+async def add_routine_item(item_name: str = Form(...), db: Session = Depends(get_db)):
+    max_order = db.query(RoutineTemplate).count()
+    db.add(RoutineTemplate(item_name=item_name, order=max_order))
+    db.commit()
+    return RedirectResponse(url="/routine", status_code=303)
+
+# Supprimer item de la routine template
+@app.post("/routine/delete_item/{item_id}")
+async def delete_routine_item(item_id: int, db: Session = Depends(get_db)):
+    item = db.query(RoutineTemplate).filter(RoutineTemplate.id == item_id).first()
+    if item:
+        db.delete(item)
         db.commit()
     return RedirectResponse(url="/routine", status_code=303)
 
@@ -190,6 +218,36 @@ async def toggle_task(task_id: int, db: Session = Depends(get_db)):
         db.commit()
     return RedirectResponse(url="/plan", status_code=303)
 
+# Supprimer tâche
+@app.post("/plan/delete/{task_id}")
+async def delete_task(task_id: int, db: Session = Depends(get_db)):
+    task = db.query(Task).filter(Task.id == task_id).first()
+    if task:
+        db.delete(task)
+        db.commit()
+    return RedirectResponse(url="/plan", status_code=303)
+
+# Route pour ajouter tâche depuis home
+@app.post("/task/add_quick")
+async def add_task_quick(
+    task_date: str = Form(...),
+    title: str = Form(...),
+    time: str = Form(None),
+    db: Session = Depends(get_db)
+):
+    db.add(Task(date=date.fromisoformat(task_date), title=title, time=time))
+    db.commit()
+    return RedirectResponse(url="/", status_code=303)
+
+# Route pour toggle task depuis home
+@app.post("/task/toggle/{task_id}")
+async def toggle_task_home(task_id: int, db: Session = Depends(get_db)):
+    task = db.query(Task).filter(Task.id == task_id).first()
+    if task:
+        task.done = not task.done
+        db.commit()
+    return RedirectResponse(url="/", status_code=303)
+
 # ========== SOBRIÉTÉ ==========
 @app.get("/sobriety", response_class=HTMLResponse)
 async def sobriety_page(request: Request, db: Session = Depends(get_db)):
@@ -219,6 +277,17 @@ async def add_substance(name: str = Form(...), db: Session = Depends(get_db)):
     db.commit()
     return RedirectResponse(url="/sobriety", status_code=303)
 
+@app.post("/sobriety/delete_substance/{substance_id}")
+async def delete_substance(substance_id: int, db: Session = Depends(get_db)):
+    # Supprimer les consommations associées
+    db.query(Consumption).filter(Consumption.substance_id == substance_id).delete()
+    # Supprimer la substance
+    substance = db.query(Substance).filter(Substance.id == substance_id).first()
+    if substance:
+        db.delete(substance)
+        db.commit()
+    return RedirectResponse(url="/sobriety", status_code=303)
+
 @app.post("/sobriety/add_consumption")
 async def add_consumption(
     substance_id: int = Form(...),
@@ -234,6 +303,14 @@ async def add_consumption(
         note=note
     ))
     db.commit()
+    return RedirectResponse(url="/sobriety", status_code=303)
+
+@app.post("/sobriety/delete_consumption/{consumption_id}")
+async def delete_consumption(consumption_id: int, db: Session = Depends(get_db)):
+    consumption = db.query(Consumption).filter(Consumption.id == consumption_id).first()
+    if consumption:
+        db.delete(consumption)
+        db.commit()
     return RedirectResponse(url="/sobriety", status_code=303)
 
 # ========== PRODUCTIVITÉ ==========

@@ -13,6 +13,208 @@ body {
     min-height: 100vh;
 }
 
+/* ========== HOME PAGE REDESIGN ========== */
+.home-body {
+    background: linear-gradient(rgba(13, 13, 13, 0.85), rgba(13, 13, 13, 0.85)),
+                url('https://wallpapercave.com/wp/wp10524209.jpg') center/cover fixed;
+}
+
+.home-container {
+    padding-top: 30px;
+}
+
+.greeting {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeInDown 0.6s ease;
+}
+
+.greeting-text {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.greeting-date {
+    color: #888;
+    font-size: 16px;
+    text-transform: capitalize;
+}
+
+/* Tâches principales */
+.today-tasks-main {
+    background: rgba(26, 26, 26, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 16px;
+    border: 2px solid #2a2a2a;
+    margin-bottom: 30px;
+    animation: fadeInUp 0.6s ease 0.2s backwards;
+}
+
+.today-tasks-main h2 {
+    margin: 0 0 20px 0;
+    color: #fff;
+    font-size: 22px;
+}
+
+.tasks-main-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.task-main-form {
+    margin: 0;
+}
+
+.task-main-item {
+    background: rgba(13, 13, 13, 0.6);
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.task-main-item:hover {
+    background: rgba(42, 42, 42, 0.6);
+    border-color: #667eea;
+    transform: translateX(5px);
+}
+
+.task-main-item.done {
+    opacity: 0.4;
+}
+
+.task-main-item input[type="checkbox"] {
+    width: 28px;
+    height: 28px;
+}
+
+.task-main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.task-main-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.task-main-time {
+    font-size: 14px;
+    color: #667eea;
+}
+
+.no-tasks {
+    text-align: center;
+    color: #888;
+    padding: 40px 20px;
+    font-size: 18px;
+}
+
+/* Ajouter tâche rapide */
+.add-task-quick {
+    margin-top: 15px;
+}
+
+.add-task-quick summary {
+    background: #667eea;
+    color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    list-style: none;
+}
+
+.add-task-quick summary:hover {
+    background: #764ba2;
+    transform: scale(1.02);
+}
+
+.quick-add-form {
+    background: rgba(13, 13, 13, 0.6);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+/* Menu principal */
+.main-menu {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    animation: fadeInUp 0.6s ease 0.4s backwards;
+}
+
+.menu-card {
+    background: rgba(26, 26, 26, 0.8);
+    backdrop-filter: blur(10px);
+    border: 2px solid #2a2a2a;
+    border-radius: 16px;
+    padding: 30px 20px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+.menu-card:hover {
+    border-color: #667eea;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.menu-icon {
+    font-size: 40px;
+}
+
+.menu-label {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* ========== CONTAINER ========== */
 .container {
     max-width: 800px;
@@ -118,6 +320,22 @@ button:hover, input[type="submit"]:hover {
     background: #6a1a1a;
 }
 
+.delete-btn-small {
+    background: #4a1a1a;
+    color: #ff6b6b;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    width: auto;
+}
+
+.delete-btn-small:hover {
+    background: #6a1a1a;
+}
+
 /* ========== FORMS ========== */
 input[type="text"],
 input[type="number"],
@@ -183,6 +401,7 @@ input[type="checkbox"] {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    margin-bottom: 40px;
 }
 
 .routine-item-form {
@@ -213,6 +432,70 @@ input[type="checkbox"] {
 
 .routine-item span {
     font-size: 16px;
+}
+
+/* ========== ROUTINE GESTION ========== */
+.add-routine-section {
+    background: #1a1a1a;
+    border: 2px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 40px;
+}
+
+.add-routine-section h2 {
+    margin-top: 0;
+    color: #fff;
+    font-size: 18px;
+}
+
+.add-routine-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.add-routine-form input {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.add-routine-form button {
+    width: auto;
+    padding: 12px 24px;
+    background: #667eea;
+}
+
+.add-routine-form button:hover {
+    background: #764ba2;
+}
+
+.manage-hint {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+.manage-routine-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.manage-routine-item {
+    background: #0d0d0d;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #2a2a2a;
+}
+
+.manage-routine-item span {
+    color: #ccc;
+    font-size: 15px;
 }
 
 /* ========== REASONS ========== */
@@ -362,6 +645,37 @@ input[type="checkbox"] {
     height: 18px;
 }
 
+/* ========== PLANIFIER MODIFIABLE ========== */
+.mini-task-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mini-task-container form:first-child {
+    flex: 1;
+}
+
+.delete-task-form {
+    margin: 0;
+}
+
+.delete-task-btn {
+    background: #4a1a1a;
+    color: #ff6b6b;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    width: auto;
+}
+
+.delete-task-btn:hover {
+    background: #6a1a1a;
+}
+
 details {
     margin-top: 10px;
 }
@@ -388,6 +702,10 @@ summary:hover {
 .quick-add input,
 .quick-add button {
     margin-bottom: 8px;
+}
+
+.add-task-details {
+    margin-top: 10px;
 }
 
 /* ========== SOBRIETY ========== */
@@ -419,6 +737,17 @@ summary:hover {
     margin-bottom: 20px;
 }
 
+.substance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.substance-header h2 {
+    margin: 0;
+}
+
 .consumption-history {
     display: flex;
     flex-direction: column;
@@ -448,6 +777,23 @@ summary:hover {
 .consumption-entry .note {
     color: #888;
     font-style: italic;
+    flex: 1;
+}
+
+.delete-consumption-btn {
+    background: #4a1a1a;
+    color: #ff6b6b;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    width: auto;
+}
+
+.delete-consumption-btn:hover {
+    background: #6a1a1a;
 }
 
 .consumption-form {
@@ -455,6 +801,10 @@ summary:hover {
     padding: 15px;
     border-radius: 8px;
     margin-top: 10px;
+}
+
+.add-consumption-details {
+    margin-top: 15px;
 }
 
 /* ========== PRODUCTIVITY ========== */
@@ -683,6 +1033,10 @@ output {
     
     .inline-form {
         flex-direction: row;
+    }
+    
+    .main-menu {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 

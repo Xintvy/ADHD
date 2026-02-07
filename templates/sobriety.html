@@ -21,7 +21,12 @@
         <!-- Liste substances -->
         {% for sub in substances %}
         <div class="substance-block">
-            <h2>{{ sub.name }}</h2>
+            <div class="substance-header">
+                <h2>{{ sub.name }}</h2>
+                <form method="POST" action="/sobriety/delete_substance/{{ sub.id }}" style="display: inline;">
+                    <button type="submit" class="delete-btn-small">× Supprimer</button>
+                </form>
+            </div>
             
             <!-- Historique -->
             <div class="consumption-history">
@@ -31,6 +36,9 @@
                         <span class="date">{{ cons.date.strftime('%d/%m') }}</span>
                         {% if cons.quantity %}<span class="qty">{{ cons.quantity }}</span>{% endif %}
                         {% if cons.note %}<span class="note">{{ cons.note }}</span>{% endif %}
+                        <form method="POST" action="/sobriety/delete_consumption/{{ cons.id }}" style="display: inline;">
+                            <button type="submit" class="delete-consumption-btn">×</button>
+                        </form>
                     </div>
                     {% endfor %}
                 {% else %}

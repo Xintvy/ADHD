@@ -3,34 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productivité</title>
+    <title>Productivité - Nayikoulice</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
-    <div class="container">
-        <h1>{{ today.strftime('%A %d %B %Y') }}</h1>
-        
-        <div class="button-grid">
-            <a href="/routine" class="big-button">ROUTINE</a>
-            <a href="/reasons" class="big-button">MY REASONS</a>
-            <a href="/objectives" class="big-button">MY MAIN OBJECTIVES</a>
-            <a href="/plan" class="big-button">PLANIFIER</a>
-            <a href="/sobriety" class="big-button">SOBRIÉTÉ</a>
-            <a href="/productivity" class="big-button">PRODUCTIVITÉ</a>
+<body class="home-body">
+    <div class="container home-container">
+        <!-- Header avec salutation -->
+        <div class="greeting">
+            <h1 class="greeting-text">Bonjour Nayikoulice 👋</h1>
+            <p class="greeting-date">{{ today.strftime('%A %d %B %Y') }}</p>
         </div>
         
-        <div class="today-tasks">
-            <h2>Tâches d'aujourd'hui</h2>
+        <!-- Tâches du jour EN GROS -->
+        <div class="today-tasks-main">
+            <h2>Aujourd'hui</h2>
+            
             {% if tasks %}
-                {% for task in tasks %}
-                <div class="task-preview {% if task.done %}done{% endif %}">
-                    <span>{{ task.title }}</span>
-                    {% if task.time %}<span class="time">{{ task.time }}</span>{% endif %}
+                <div class="tasks-main-list">
+                    {% for task in tasks %}
+                    <form method="POST" action="/task/toggle/{{ task.id }}" class="task-main-form">
+                        <div class="task-main-item {% if task.done %}done{% endif %}" onclick="this.parentElement.submit()">
+                            <input type="checkbox" {% if task.done %}checked{% endif %} disabled>
+                            <div class="task-main-content">
+                                <span class="task-main-title">{{ task.title }}</span>
+                                {% if task.time %}<span class="task-main-time">{{ task.time }}</span>{% endif %}
+                            </div>
+                        </div>
+                    </form>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             {% else %}
-                <p class="empty">Aucune tâche planifiée</p>
+                <p class="no-tasks">Aucune tâche pour aujourd'hui 🎉</p>
             {% endif %}
+            
+            <!-- Bouton ajouter tâche rapide -->
+            <details class="add-task-quick">
+                <summary>+ Ajouter une tâche</summary>
+                <form method="POST" action="/task/add_quick" class="quick-add-form">
+                    <input type="hidden" name="task_date" value="{{ today }}">
+                    <input type="text" name="title" placeholder="Titre de la tâche" required>
+                    <input type="text" name="time" placeholder="Heure (optionnel)">
+                    <button type="submit">Ajouter</button>
+                </form>
+            </details>
+        </div>
+        
+        <!-- Menu principal (boutons) -->
+        <div class="main-menu">
+            <a href="/routine" class="menu-card">
+                <span class="menu-icon">🌅</span>
+                <span class="menu-label">Routine</span>
+            </a>
+            
+            <a href="/reasons" class="menu-card">
+                <span class="menu-icon">💭</span>
+                <span class="menu-label">My Reasons</span>
+            </a>
+            
+            <a href="/objectives" class="menu-card">
+                <span class="menu-icon">🎯</span>
+                <span class="menu-label">Objectifs</span>
+            </a>
+            
+            <a href="/plan" class="menu-card">
+                <span class="menu-icon">📅</span>
+                <span class="menu-label">Planifier</span>
+            </a>
+            
+            <a href="/sobriety" class="menu-card">
+                <span class="menu-icon">🚭</span>
+                <span class="menu-label">Sobriété</span>
+            </a>
+            
+            <a href="/productivity" class="menu-card">
+                <span class="menu-icon">📊</span>
+                <span class="menu-label">Productivité</span>
+            </a>
         </div>
     </div>
 </body>
