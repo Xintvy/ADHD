@@ -5,15 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planifier</title>
     <link rel="stylesheet" href="/static/style.css">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0f172a">
 </head>
 <body>
     <div class="container">
         <a href="/" class="back-button">← Retour</a>
-        
+
         <h1>Planifier la semaine</h1>
-        
+
         {% set day_names = ['Vendredi', 'Samedi', 'Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi'] %}
-        
+
         <div class="week-grid">
             {% for day in week %}
             <div class="day-card {% if day == today %}today{% endif %} {% if loop.index0 == 0 %}planning-day{% endif %}">
@@ -22,7 +26,7 @@
                     <span>{{ day.strftime('%d/%m') }}</span>
                     {% if loop.index0 == 0 %}<span class="badge">Planning</span>{% endif %}
                 </div>
-                
+
                 <div class="day-tasks">
                     {% for task in week_tasks[day] %}
                     <div class="mini-task-container">
@@ -39,7 +43,7 @@
                     </div>
                     {% endfor %}
                 </div>
-                
+
                 <details class="add-task-details">
                     <summary>+ Ajouter</summary>
                     <form method="POST" action="/plan/add" class="quick-add">
@@ -53,5 +57,12 @@
             {% endfor %}
         </div>
     </div>
+
+    <!-- PWA -->
+    <script>
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/static/sw.js");
+    }
+    </script>
 </body>
 </html>

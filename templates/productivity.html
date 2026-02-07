@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productivité</title>
     <link rel="stylesheet" href="/static/style.css">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0f172a">
 </head>
 <body>
     <div class="container">
@@ -51,5 +55,12 @@
             {% endif %}
         </div>
     </div>
+
+    <!-- PWA -->
+    <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/static/sw.js");
+    }
+    </script>
 </body>
 </html>

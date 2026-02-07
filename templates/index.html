@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>ADHD Tracker</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0f172a">
+
     <style>
         body {
             background: #111;
@@ -12,9 +17,7 @@
             margin: auto;
             padding: 20px;
         }
-        h1 {
-            text-align: center;
-        }
+        h1 { text-align: center; }
         input, textarea, button {
             width: 100%;
             margin-top: 10px;
@@ -23,9 +26,7 @@
             color: #eee;
             border: 1px solid #333;
         }
-        button {
-            cursor: pointer;
-        }
+        button { cursor: pointer; }
         .task {
             border: 1px solid #333;
             padding: 10px;
@@ -55,6 +56,13 @@
     <div class="reason">Pourquoi : {{ task.reason }}</div>
 </div>
 {% endfor %}
+
+<!-- PWA -->
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/static/sw.js");
+}
+</script>
 
 </body>
 </html>

@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Reasons</title>
     <link rel="stylesheet" href="/static/style.css">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0f172a">
 </head>
 <body>
     <div class="container">
         <a href="/" class="back-button">← Retour</a>
-        
+
         <h1>My Reasons</h1>
-        
+
         <div class="reasons-list">
             {% for reason in reasons %}
             <div class="reason-item">
@@ -22,11 +26,18 @@
             </div>
             {% endfor %}
         </div>
-        
+
         <form method="POST" action="/reasons/add" class="add-form">
             <textarea name="text" placeholder="Pourquoi tu fais tout ça ?" rows="3" required></textarea>
             <button type="submit">Ajouter</button>
         </form>
     </div>
+
+    <!-- PWA -->
+    <script>
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/static/sw.js");
+    }
+    </script>
 </body>
 </html>

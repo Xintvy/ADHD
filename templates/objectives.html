@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes Objectifs</title>
     <link rel="stylesheet" href="/static/style.css">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0f172a">
 </head>
 <body>
     <div class="container">
@@ -74,7 +78,11 @@
                 
                 {% if objectives.sleep_hours %}
                 <p class="sleep-status">
-                    {% if objectives.sleep_hours >= 9 %}✅ Objectif atteint{% else %}⚠️ Manque {{ 9 - objectives.sleep_hours }}h{% endif %}
+                    {% if objectives.sleep_hours >= 9 %}
+                        ✅ Objectif atteint
+                    {% else %}
+                        ⚠️ Manque {{ 9 - objectives.sleep_hours }}h
+                    {% endif %}
                 </p>
                 {% endif %}
             </div>
@@ -119,5 +127,12 @@
             </details>
         </div>
     </div>
+
+    <!-- PWA -->
+    <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/static/sw.js");
+    }
+    </script>
 </body>
 </html>

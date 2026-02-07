@@ -5,19 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productivité - Nayikoulice</title>
     <link rel="stylesheet" href="/static/style.css">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0f172a">
 </head>
 <body class="home-body">
     <div class="container home-container">
-        <!-- Header avec salutation -->
         <div class="greeting">
             <h1 class="greeting-text">Bonjour Nayikoulice 👋</h1>
             <p class="greeting-date">{{ today.strftime('%A %d %B %Y') }}</p>
         </div>
-        
-        <!-- Tâches du jour EN GROS -->
+
         <div class="today-tasks-main">
             <h2>Aujourd'hui</h2>
-            
+
             {% if tasks %}
                 <div class="tasks-main-list">
                     {% for task in tasks %}
@@ -35,8 +37,7 @@
             {% else %}
                 <p class="no-tasks">Aucune tâche pour aujourd'hui 🎉</p>
             {% endif %}
-            
-            <!-- Bouton ajouter tâche rapide -->
+
             <details class="add-task-quick">
                 <summary>+ Ajouter une tâche</summary>
                 <form method="POST" action="/task/add_quick" class="quick-add-form">
@@ -47,39 +48,22 @@
                 </form>
             </details>
         </div>
-        
-        <!-- Menu principal (boutons) -->
+
         <div class="main-menu">
-            <a href="/routine" class="menu-card">
-                <span class="menu-icon">🌅</span>
-                <span class="menu-label">Routine</span>
-            </a>
-            
-            <a href="/reasons" class="menu-card">
-                <span class="menu-icon">💭</span>
-                <span class="menu-label">My Reasons</span>
-            </a>
-            
-            <a href="/objectives" class="menu-card">
-                <span class="menu-icon">🎯</span>
-                <span class="menu-label">Objectifs</span>
-            </a>
-            
-            <a href="/plan" class="menu-card">
-                <span class="menu-icon">📅</span>
-                <span class="menu-label">Planifier</span>
-            </a>
-            
-            <a href="/sobriety" class="menu-card">
-                <span class="menu-icon">🚭</span>
-                <span class="menu-label">Sobriété</span>
-            </a>
-            
-            <a href="/productivity" class="menu-card">
-                <span class="menu-icon">📊</span>
-                <span class="menu-label">Productivité</span>
-            </a>
+            <a href="/routine" class="menu-card">🌅 Routine</a>
+            <a href="/reasons" class="menu-card">💭 My Reasons</a>
+            <a href="/objectives" class="menu-card">🎯 Objectifs</a>
+            <a href="/plan" class="menu-card">📅 Planifier</a>
+            <a href="/sobriety" class="menu-card">🚭 Sobriété</a>
+            <a href="/productivity" class="menu-card">📊 Productivité</a>
         </div>
     </div>
+
+    <!-- PWA -->
+    <script>
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/static/sw.js");
+    }
+    </script>
 </body>
 </html>
